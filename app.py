@@ -1,4 +1,6 @@
 import streamlit as st
+import tqdm
+tqdm.disable()
 from paddleocr import PaddleOCR, draw_ocr
 import re
 from PIL import Image
