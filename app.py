@@ -1,6 +1,5 @@
 import streamlit as st
 import sys
-from tqdm import tqdm
 
 from paddleocr import PaddleOCR, draw_ocr
 import re
