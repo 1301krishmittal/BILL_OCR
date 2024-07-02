@@ -1,49 +1,14 @@
 import streamlit as st
 import sys
 from tqdm import tqdm
+tqdm.monitor_interval = 0  # To avoid some threading issues
+tqdm.write = lambda x: sys.stdout.write(f"{x}\n")
 from paddleocr import PaddleOCR, draw_ocr
 import re
 from PIL import Image
 import numpy as np
 from pdf2image import convert_from_bytes
 # Custom CSS to change the background color
-
-import os
-import requests
-from paddleocr.ppocr.utils.logging import get_logger
-
-logger = get_logger()
-
-def download_without_progressbar(url, path):
-    with open(path, 'wb') as f:
-        response = requests.get(url, stream=True)
-        total_length = response.headers.get('content-length')
-
-        if total_length is None:
-            f.write(response.content)
-        else:
-            dl = 0
-            total_length = int(total_length)
-            for data in response.iter_content(chunk_size=4096):
-                dl += len(data)
-                f.write(data)
-                logger.info(f"Downloaded {dl/total_length*100:.2f}%")
-
-def maybe_download_custom(model_dir, model_url):
-    if not os.path.exists(model_dir):
-        os.makedirs(model_dir)
-    download_without_progressbar(model_url, os.path.join(model_dir, model_url.split('/')[-1]))
-
-# Override the maybe_download function used by PaddleOCR
-def override_maybe_download():
-    import paddleocr
-    paddleocr.ppocr.utils.network.maybe_download = maybe_download_custom
-
-# Override the function before initializing PaddleOCR
-override_maybe_download()
-
-
-
 st.markdown(
     """
     <style>
