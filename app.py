@@ -1,14 +1,21 @@
 import streamlit as st
 import sys
 from tqdm import tqdm
-tqdm.monitor_interval = 0  # To avoid some threading issues
-tqdm.write = lambda x: sys.stdout.write(f"{x}\n")
+
 from paddleocr import PaddleOCR, draw_ocr
 import re
 from PIL import Image
 import numpy as np
 from pdf2image import convert_from_bytes
 # Custom CSS to change the background color
+
+tqdm.monitor_interval = 0
+tqdm.write = lambda x: sys.stdout.write(f"{x}\n")
+
+# Suppress tqdm output
+os.environ['PPOCR_NO_TQDM'] = '1'
+
+
 st.markdown(
     """
     <style>
